@@ -33,7 +33,7 @@ def ConvertRCDToCooHD(rcdMatrix,nnzs,shape,rcdIndex=None,tolil=False):
         col  = rcdMatrix[1,i:i+nnzs]
         data = rcdMatrix[2,i:i+nnzs]
         rcdIndex[0]+=nnzs
-        coo = scipy.sparse.coo_matrix((data,(row,col)), shape=shape)
+        coo = scipy.sparse.coo_matrix((data,(row,col)), shape=shape, dtype=np.int32)
         if tolil:  return coo.tolil()
         else:      return coo
 
