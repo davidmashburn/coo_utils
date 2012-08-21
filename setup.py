@@ -11,5 +11,8 @@ setup(
     license='LICENSE.txt',
     description='',
     long_description=open('README.rst').read(),
-    install_requires=[],
+    install_requires=[
+                      'numpy>=1.0'
+                      'scipy>=0.8'
+                     ],
 )
