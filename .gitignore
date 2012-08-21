@@ -4,9 +4,7 @@
 *.c
 *~
 dist
-dist/*
 build
-built/*
 zips
-zips/*
+coo_utils.egg-info
 MANIFEST
