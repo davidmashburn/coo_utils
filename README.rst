@@ -19,6 +19,8 @@ RCD: A sparse array represented as a flat row-column-data matrix
 The disk storage format uses the RCD fomat for maximum simplicity:
 
 \*_rcd.npy    -  The rcd matrix stored in the .npy format (int32)
+
 \*_nnzs.npy   -  The nnzs array store in .npy format (int)
+
 \*_shape.txt  -  a simple text file with the full shape of the array in
                 comma-separated plain text
