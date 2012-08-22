@@ -7,6 +7,7 @@ nodes in the scipy.sparse.coo_matrix format. The storage format can
 either be normal or differenced (helpful for same-value blocks data).
 
 Some terms used in the code:
+----------------------------
 
 CooHD: list (or deeply nested list(s)) of scipy.sparse.coo_matrix's (HD means higher-dimensional)
 
@@ -15,6 +16,7 @@ nnzs: An array with the same shape as the nested lists in the cooHD (aka without
 RCD: A sparse array represented as a flat row-column-data matrix. Multi-dimensional shape data is recoverable using the nnzs array
 
 The disk storage format uses the RCD fomat for maximum simplicity:
+------------------------------------------------------------------
 
 \*_rcd.npy    -  The rcd matrix stored in the .npy format (int32)
 
