@@ -106,12 +106,35 @@ def LoadRCDFileToCooHD(baseName,tolil=False):
         return
     return shape,ConvertRCDToCooHD(rcdMatrix,nnzs,shape,tolil=tolil)
 
+def ArrayToCooHD(arr,dtype=np.int32):
+    if arr.ndim==2:
+        return arr.astype(dtype)
+    elif arr.ndim>2:
+        return [ArrayToCooHD(i) for i in arr]
+    else:
+        print 'ERROR! array has too few dimensions!'
+
+def CooHDToArray(cooHD,dtype=np.uint16):
+    if hasattr(cooHD,'shape'): # seems to be a defining characteristic of all scipy.sparse
+        return cooHD.toarray()
+    else: # so this must be a list...
+        return np.array([CooHDToArray(i) for i in cooHD],dtype=dtype)
+
 # Super-simple compression for integer block matrices
-def ArrayToCooDiff(water):
+def ArrayToCooDiff(arr,dtype=np.int32):
     '''Watersheds are usually blocks, so by striping the array, we can store it more compactly (diff on axis 0); recover the array with np.cumsum'''
-    cooDiff = water.astype(np.int32)
-    cooDiff[1:]=np.diff(cooDiff,axis=0)
-    return cooDiff
+    if arr.ndim==2:
+        cooDiff = arr.astype(dtype)
+        cooDiff[1:]=np.diff(cooDiff,axis=0)
+        return cooDiff
+    elif arr.ndim>2:
+        return [ArrayToCooDiff(i) for i in arr]
+    else:
+        print 'ERROR! array has too few dimensions!'
 # And uncompression...
-def CooDiffToArray(cooDiff):
-    return np.cumsum(cooDiff,axis=0) # that was easy...
+def CooDiffToArray(cooDiff,dtype=np.uint16):
+    if hasattr(cooDiff,'shape'): # seems to be a defining characteristic of all scipy.sparse
+        return np.cumsum(cooDiff.toarray(),axis=0) # that was easy...
+    else: # so this must be a list...
+        return np.array([CooDiffToArray(i) for i in cooDiff],dtype=dtype)
+
