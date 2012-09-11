@@ -106,9 +106,13 @@ def LoadRCDFileToCooHD(baseName,tolil=False):
         return
     return shape,ConvertRCDToCooHD(rcdMatrix,nnzs,shape,tolil=tolil)
 
-def ArrayToCooHD(arr,dtype=np.int32):
+def ArrayToCooHD(arr,dtype=np.int32,tolil=True):
     if arr.ndim==2:
-        return arr.astype(dtype)
+        arr=arr.astype(dtype)
+        if tolil:
+            return scipy.sparse.lil_matrix(arr,dtype=dtype)
+        else:
+            return scipy.sparse.coo_matrix(arr,dtype=dtype)
     elif arr.ndim>2:
         return [ArrayToCooHD(i) for i in arr]
     else:
@@ -121,11 +125,15 @@ def CooHDToArray(cooHD,dtype=np.uint16):
         return np.array([CooHDToArray(i) for i in cooHD],dtype=dtype)
 
 # Super-simple compression for integer block matrices
-def ArrayToCooDiff(arr,dtype=np.int32):
+def ArrayToCooDiff(arr,dtype=np.int32,tolil=True):
     '''Watersheds are usually blocks, so by striping the array, we can store it more compactly (diff on axis 0); recover the array with np.cumsum'''
     if arr.ndim==2:
         cooDiff = arr.astype(dtype)
         cooDiff[1:]=np.diff(cooDiff,axis=0)
+        if tolil:
+            return scipy.sparse.lil_matrix(cooDiff,dtype=dtype)
+        else:
+            return scipy.sparse.coo_matrix(cooDiff,dtype=dtype)
         return cooDiff
     elif arr.ndim>2:
         return [ArrayToCooDiff(i) for i in arr]
