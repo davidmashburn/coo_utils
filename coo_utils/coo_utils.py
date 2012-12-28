@@ -57,8 +57,10 @@ def ConvertRCDToCooHD(rcdMatrix,nnzs,shape,rcdIndex=None,tolil=False):
         data = rcdMatrix[2,i:i+nnzs]
         rcdIndex[0]+=nnzs
         coo = scipy.sparse.coo_matrix((data,(row,col)), shape=shape, dtype=np.int32)
-        if tolil:  return coo.tolil()
-        else:      return coo
+        if tolil:
+            return coo.tolil()
+        else:
+            return coo
 
 # Find the nnzs using nnzs = GetCooHDnnzs(cooHD,shape)
 def ConvertCooHDToRCD(cooHD,nnzs,rcdMatrix=None,rcdIndex=None,fromlil=False):
@@ -126,7 +128,8 @@ def CooHDToArray(cooHD,dtype=np.uint16):
 
 # Super-simple compression for integer block matrices
 def ArrayToCooDiff(arr,dtype=np.int32,tolil=True):
-    '''Watersheds are usually blocks, so by striping the array, we can store it more compactly (diff on axis 0); recover the array with np.cumsum'''
+    '''Watersheds are usually blocks, so by striping the array, we can store it more compactly
+       (diff on axis 0); recover the array with np.cumsum'''
     if arr.ndim==2:
         cooDiff = arr.astype(dtype)
         cooDiff[1:]=np.diff(cooDiff,axis=0)
