@@ -80,16 +80,19 @@ def ConvertCooHDToRCD(cooHD,nnzs,rcdMatrix=None,rcdIndex=None,fromlil=False):
         rcdIndex[0]+=nnzs
     return rcdMatrix
 
+def SaveRCDFile(rcdMatrix,nnzs,shape,baseName):
+    np.save( baseName+'_nnzs.npy', nnzs )
+    np.save( baseName+'_rcd.npy', rcdMatrix )
+    shapeStr = ','.join(map(str,shape))
+    open(baseName+'_shape.txt','w').write(shapeStr)
+
 def SaveCooHDToRCDFile(cooHD,shape,baseName,fromlil=False):
     if not VerifyCooHDShape(cooHD,shape):
         print 'Shape does not match or cooHD is ill-formed!'
         return
     nnzs = GetCooHDnnzs(cooHD,shape)
-    np.save( baseName+'_nnzs.npy', nnzs )
     rcdMatrix = ConvertCooHDToRCD(cooHD,nnzs,fromlil=fromlil)
-    np.save( baseName+'_rcd.npy', rcdMatrix )
-    shapeStr = ','.join(map(str,shape))
-    open(baseName+'_shape.txt','w').write(shapeStr)
+    SaveRCDFile(rcdMatrix,nnzs,shape,baseName)
 
 def GetShapeFromFile(baseName):
     shapeStr = open( baseName+'_shape.txt' , 'r' ).read()
