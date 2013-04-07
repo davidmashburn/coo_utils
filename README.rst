@@ -1,4 +1,4 @@
-coo_utils works with numpy as scipy.sparse (2D only) to store
+coo_utils works with numpy and scipy.sparse (2D only) to store
 compressed multidimensional arrays both in memory and on disks. This can
 DRASTICALLY reduce the space required.
 
